@@ -9,7 +9,7 @@ describe('Utils Test Suite', () => {
     });
   });
 
-  describe('DBClient', function () {
+  describe('DBClient', function dbClientTests() {
     // Increase timeout to allow for db connection
     this.timeout(10000);
 
