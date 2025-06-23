@@ -1,12 +1,12 @@
 #!/usr/bin/node
 
-import { createClient } from "redis";
-import { promisify } from "util";
+import { createClient } from 'redis';
+import { promisify } from 'util';
 
 class RedisClient {
   constructor() {
     this.client = createClient();
-    this.client.on("error", (err) => console.log("Redis Client Error:", err));
+    this.client.on('error', (err) => console.log('Redis Client Error:', err));
   }
 
   isAlive() {

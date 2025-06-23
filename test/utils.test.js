@@ -1,34 +1,36 @@
-import { expect } from "chai";
-import sinon from "sinon";
-import redisClient from "../utils/redis";
-import dbClient from "../utils/db";
+import { expect } from 'chai';
+import dbClient from '../utils/db';
+import redisClient from '../utils/redis';
 
-describe("Utils", () => {
-  describe("RedisClient", () => {
-    it("isAlive returns true when connected", () => {
-      expect(redisClient.isAlive()).to.equal(true);
+describe('Utils', () => {
+  describe('RedisClient', () => {
+    it('isAlive returns true when connected', () => {
+      expect.hasAssertions();
+      expect(redisClient.isAlive()).toEqual(true);
     });
-
-    // Add more tests for get, set, del using sinon stubs
   });
 
-  describe("DBClient", function () {
-    this.timeout(10000); // Increase timeout for db connection
-    it("isAlive returns true when connected", (done) => {
-      setTimeout(() => {
-        expect(dbClient.isAlive()).to.equal(true);
-        done();
-      }, 3000);
+  describe('DBClient', function () {
+    this.timeout(10000);
+    before((done) => {
+      setTimeout(done, 3000); // Wait for db to connect
     });
 
-    it("nbUsers returns a number", async () => {
+    it('isAlive returns true when connected', () => {
+      expect.hasAssertions();
+      expect(dbClient.isAlive()).toEqual(true);
+    });
+
+    it('nbUsers returns a number', async () => {
+      expect.hasAssertions();
       const numUsers = await dbClient.nbUsers();
-      expect(numUsers).to.be.a("number");
+      expect(typeof numUsers).toEqual('number');
     });
 
-    it("nbFiles returns a number", async () => {
+    it('nbFiles returns a number', async () => {
+      expect.hasAssertions();
       const numFiles = await dbClient.nbFiles();
-      expect(numFiles).to.be.a("number");
+      expect(typeof numFiles).toEqual('number');
     });
   });
 });
