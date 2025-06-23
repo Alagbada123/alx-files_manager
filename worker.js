@@ -13,9 +13,7 @@ fileQueue.process(async (job) => {
   if (!fileId) throw new Error('Missing fileId');
   if (!userId) throw new Error('Missing userId');
 
-  const file = await (
-    await dbClient.files()
-  ).findOne({
+  const file = await (await dbClient.files()).findOne({
     _id: new ObjectId(fileId),
     userId: new ObjectId(userId),
   });
@@ -23,21 +21,22 @@ fileQueue.process(async (job) => {
   if (!file) throw new Error('File not found');
 
   const sizes = [500, 250, 100];
-  for (const size of sizes) {
+  // Create an array of promises for thumbnail generation
+  const thumbnailPromises = sizes.map(async (size) => {
     const options = { width: size };
     const thumbnail = await imageThumbnail(file.localPath, options);
     const thumbPath = `${file.localPath}_${size}`;
     fs.writeFileSync(thumbPath, thumbnail);
-  }
+  });
+  // Await all promises to resolve in parallel
+  await Promise.all(thumbnailPromises);
 });
 
 userQueue.process(async (job) => {
   const { userId } = job.data;
   if (!userId) throw new Error('Missing userId');
 
-  const user = await (
-    await dbClient.users()
-  ).findOne({ _id: new ObjectId(userId) });
+  const user = await (await dbClient.users()).findOne({ _id: new ObjectId(userId) });
   if (!user) throw new Error('User not found');
 
   console.log(`Welcome ${user.email}!`);
