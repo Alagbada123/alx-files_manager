@@ -1,14 +1,18 @@
 #!/usr/bin/node
 
-const express = require("express");
-const router = require("./routes/index");
+import express from 'express';
+import router from './routes/index';
 
-const server = express();
-const PORT = process.env.PORT ? process.env.PORT : 5000;
+const app = express();
+const port = process.env.PORT || 5000;
 
-server.use(express.json());
-server.use(router);
+// Increase the limit for JSON body
+app.use(express.json({ limit: '10mb' }));
 
-server.listen(PORT, () =>
-  console.log(`The server is running on port: ${PORT}`)
-);
+app.use('/', router);
+
+app.listen(port, () => {
+  console.log(`Server running on port ${port}`);
+});
+
+export default app;
