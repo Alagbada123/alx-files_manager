@@ -1,10 +1,10 @@
 #!/usr/bin/node
 
-import { MongoClient } from 'mongodb';
+import { MongoClient } from "mongodb";
 
-const DB_HOST = process.env.DB_HOST || 'localhost';
+const DB_HOST = process.env.DB_HOST || "localhost";
 const DB_PORT = process.env.DB_PORT || 27017;
-const DB_DATABASE = process.env.DB_DATABASE || 'files_manager';
+const DB_DATABASE = process.env.DB_DATABASE || "files_manager";
 const url = `mongodb://${DB_HOST}:${DB_PORT}`;
 
 class DBClient {
@@ -16,7 +16,7 @@ class DBClient {
         this.connected = true;
         this.db = this.client.db(DB_DATABASE);
       } else {
-        console.log('MongoDB connection error:', err);
+        console.log("MongoDB connection error:", err);
         this.connected = false;
       }
     });
@@ -27,19 +27,19 @@ class DBClient {
   }
 
   async nbUsers() {
-    return this.db.collection('users').countDocuments();
+    return this.db.collection("users").countDocuments();
   }
 
   async nbFiles() {
-    return this.db.collection('files').countDocuments();
+    return this.db.collection("files").countDocuments();
   }
 
   async users() {
-    return this.db.collection('users');
+    return this.db.collection("users");
   }
 
   async files() {
-    return this.db.collection('files');
+    return this.db.collection("files");
   }
 }
 
